@@ -1,20 +1,15 @@
 Processor Type: Single-Cycle CPU
 
 
-Design Single-Cycle CPU - 0.5 hours, 11/8
-Design Multi-Cycle CPU - 1 hour, 11/8
+Design Single-Cycle CPU - 1 hours, 11/8
 
 Working Single-Cycle CPU - 11/11
-Modules for XORI, ADDI, ADD, SUB, SLT - 3 hours, 11/9
-Tests for XORI, ADDI, ADD, SUB, SLT - 1 hour, 11/9
-Modules for LW, SW, J, JR, JAL, BNE  - 2 hours, 11/10
-Tests for LW, SW, J, JR, JAL, BNE  - 2 hours, 11/10
-Debugging -  2 hours, 11/11
-Working Multi-Cycle CPU - 11/13
-	Extend Single-Cycle to Multi-Cycle CPU - 2 hours, 11/12
-	Update all modules for Multi-Cycle - 2 hours, 11/13
-	Update all tests for Multi-Cycle - 1 hour, 11/13
-	Debugging - 2 hours, 11/13
+	Modules for XORI, ADDI, ADD, SUB, SLT - 3 hours, 11/9
+	Tests for XORI, ADDI, ADD, SUB, SLT - 1 hour, 11/9
+	Modules for LW, SW, J, JR, JAL, BNE  - 2 hours, 11/10
+	Tests for LW, SW, J, JR, JAL, BNE  - 2 hours, 11/10
+	Debugging -  2 hours, 11/11
+
 Assembly Test Completed - by 11/14
 	Write Test Assembly Program - 1 hour, 11/13
 	
