@@ -1,4 +1,4 @@
-`include "instructionDecoder.v"
+`include "decodeInstruction.v"
 module testInstructionDecoder();
 
 	reg[31:0] instruction;
