@@ -1,5 +1,5 @@
 `include "decodeInstruction.v"
-module testInstructionDecoder();
+module testDecodeInstruction();
 
 	reg[31:0] instruction;
 	wire [5:0] Opp, Func;
@@ -7,7 +7,7 @@ module testInstructionDecoder();
 	wire [15:0] Imm;
 	wire [25:0] Jaddress;
 
-	instructionDecoder id (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddress);
+	decodeInstruction decode0 (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddress);
 
 	initial begin
 		instruction = 32'b00000011101010101010100101100011; #1000;

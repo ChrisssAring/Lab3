@@ -1,6 +1,6 @@
 `include "signExtend.v"
 
-module instructionDecoder (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddress);
+module decodeInstruction (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddress);
 
 	input[31:0] instruction;
 	output[5:0] Opp, Func;
