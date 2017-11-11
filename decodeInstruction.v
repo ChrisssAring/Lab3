@@ -5,13 +5,13 @@ module decodeInstruction (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddre
 	input[31:0] instruction;
 	output[5:0] Opp, Func;
 	output[4:0] Rs, Rt, Rd, Shamt;
-	output[31:0] Imm;
+	output[15:0] Imm;
 	output[25:0] Jaddress;
 
 	wire [31:0] instruction;
 	wire [5:0] Opp, Func;
 	wire [4:0] Rs, Rt, Rd;
-	wire [31:0] Imm;
+	wire [15:0] Imm;
 	wire [25:0] Jaddress;
 	wire [31:0] ImmPre;
 
