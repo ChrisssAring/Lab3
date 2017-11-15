@@ -11,8 +11,12 @@ module register
 )
 
     always @(posedge clk) begin
-        Da <= 
-        Db <= 
+        if (WrEn) begin
+            // Write data
+        end
+
+        Da <= memory[Rs];
+        Db <= memory[Rt];
     end
 
 endmodule
