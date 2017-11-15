@@ -9,14 +9,15 @@ module register
 	output reg [width-1:0] Da,     // Read Data 1
 	output reg [width-1:0] Db,     // Read Data 2
 )
-
+	reg [31:0] regMemory;
+	
     always @(posedge clk) begin
         if (WrEn) begin
             // Write data
         end
 
-        Da <= memory[Rs];
-        Db <= memory[Rt];
+        Da <= regMemory[Rs];
+        Db <= regMemory[Rt];
     end
 
 endmodule
