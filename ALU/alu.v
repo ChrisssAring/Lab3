@@ -17,7 +17,6 @@ module ALUcontrolLUT
 	input [31:0]a,
 	input [31:0]b,
   output reg zero
-
 );
 //everything going through the different parts
 wire [31:0]addsub;
@@ -44,14 +43,70 @@ or_32bit or0(orin[31:0],a[31:0],b[31:0]);
   	begin
     #5000
     case (ALUcommand)
-      3'b000:  begin finalsignal[31:0] = addsub[31:0]; cout = adder_cout; flag = adder_flag; zero = 0; end
-      3'b001:  begin finalsignal[31:0] = addsub[31:0]; cout = adder_cout; flag = adder_flag;zero = 0; end
-      3'b010:  begin finalsignal[31:0] = xorin[31:0]; cout = 0; flag = 0; zero = 0; end // carryout and flag should be 0 for all non-add/sub operations
-      3'b011:  begin finalsignal[31:0] = slt[31:0]; cout = 0; flag = 0; zero = 0; end
-      3'b100:  begin finalsignal[31:0] = andin[31:0]; cout = 0; flag = 0; zero = 0; end
-      3'b101:  begin finalsignal[31:0] = nandin[31:0]; cout = 0; flag = 0; zero = 0; end
-      3'b110:  begin finalsignal[31:0] = norin[31:0]; cout = 0; flag = 0; zero = 0; end
-      3'b111:  begin finalsignal[31:0] = orin[31:0]; cout = 0; flag = 0; zero = 0; end
+      3'b000:  begin finalsignal[31:0] = addsub[31:0]; cout = adder_cout; flag = adder_flag; 
+                if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+              end
+      3'b001:  begin finalsignal[31:0] = addsub[31:0]; cout = adder_cout; flag = adder_flag; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+              end
+      3'b010:  begin finalsignal[31:0] = xorin[31:0]; cout = 0; flag = 0; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+              end              
+      3'b011:  begin finalsignal[31:0] = slt[31:0]; cout = 0; flag = 0; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+               end
+      3'b100:  begin finalsignal[31:0] = andin[31:0]; cout = 0; flag = 0; zero = 0; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+                 end
+      3'b101:  begin finalsignal[31:0] = nandin[31:0]; cout = 0; flag = 0; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+                end
+      3'b110:  begin finalsignal[31:0] = norin[31:0]; cout = 0; flag = 0; zero = 0;
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+                end
+      3'b111:  begin finalsignal[31:0] = orin[31:0]; cout = 0; flag = 0; zero = 0; 
+               if (finalsignal[31:0] == 32'b0) begin
+                  zero = 1;
+                end
+                else begin
+                  zero = 0;
+                end
+      end
     endcase
     end
 endmodule
