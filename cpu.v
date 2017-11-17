@@ -94,8 +94,8 @@ wire Branch;
 
 //Register Wires
 wire RegWrite;
-wire WriteReg;
-wire [31:0] WriteData;
+wire [31:0] WriteReg;
+wire [4:0]  WriteDataReg;
 wire [31:0] readData0;
 wire [31:0] readData1;
 
@@ -109,8 +109,7 @@ wire [31:0] alu_mux_out;
 wire [31:0] dataMemoryOut;
 wire [31:0] dataMemoryIn;
 wire [31:0] dataMemoryAddress;
-
-
+wire [31:0] WriteData;
 
 
 // Program Counter
@@ -132,9 +131,9 @@ operand_lut operand_controls(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUc
 assign PCsrc = Branch&&zero;
 
 // Register
-regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
+regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteDataReg),.ReadData1(readData0),.ReadData2(readData1));
 
-mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
+mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteDataReg));
 
 mux32 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
