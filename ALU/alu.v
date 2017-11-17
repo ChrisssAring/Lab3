@@ -29,7 +29,7 @@ wire [31:0]orin;
 wire adder_cout;
 wire adder_flag;
 
-adder_subtracter addsub0(addsub[31:0],adder_cout,adder_flag,a[31:0],b[31:0],ALUcommand[2:0]);
+adder_subtracter addsub0(addsub[31:0],adder_cout,adder_flag,a[31:0],b[31:0],ALUCommand[2:0]);
 xor_32bit xor0(xorin[31:0],a[31:0],b[31:0]);
 full_slt_32bit slt0(slt[31:0],a[31:0],b[31:0]);
 and_32bit and0(andin[31:0],a[31:0],b[31:0]);
@@ -39,10 +39,10 @@ or_32bit or0(orin[31:0],a[31:0],b[31:0]);
 
 
   // update on changes to ALUcommand, a, or b
-  always @(ALUcommand or a or b) 
+  always @(ALUCommand or a or b) 
   	begin
     #5000
-    case (ALUcommand)
+    case (ALUCommand)
       3'b000:  begin finalsignal[31:0] = addsub[31:0]; cout = adder_cout; flag = adder_flag; 
                 if (finalsignal[31:0] == 32'b0) begin
                   zero = 1;
