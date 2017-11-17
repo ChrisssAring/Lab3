@@ -13,7 +13,7 @@ module ALUcontrolLUT
 	output reg cout, //addsub only
 	output reg flag, //addsub only
 	output reg[31:0] finalsignal,
-	input [2:0]ALUcommand,
+	input [2:0]ALUCommand,
 	input [31:0]a,
 	input [31:0]b,
   output reg zero
