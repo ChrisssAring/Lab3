@@ -1,4 +1,4 @@
-`include "adder.v"
+`include "ALU/adder.v"
 
 // 32 bit mux
 module mux

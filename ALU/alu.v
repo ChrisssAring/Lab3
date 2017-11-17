@@ -1,12 +1,12 @@
 //final 32-bit ALU
 
-`include "adder_subtracter.v"
-`include "slt.v" 
-`include "and_32bit.v"
-`include "nand_32bit.v"
-`include "xor_32bit.v"
-`include "nor_32bit.v"
-`include "or_32bit.v"
+`include "ALU/adder_subtracter.v"
+`include "ALU/slt.v" 
+`include "ALU/and_32bit.v"
+`include "ALU/nand_32bit.v"
+`include "ALU/xor_32bit.v"
+`include "ALU/nor_32bit.v"
+`include "ALU/or_32bit.v"
 
 module ALUcontrolLUT 
 (

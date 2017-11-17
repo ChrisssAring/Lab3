@@ -5,8 +5,8 @@
 //   2 asynchronous read ports
 //   1 synchronous, positive edge triggered write port
 //------------------------------------------------------------------------------
-`include "register.v"
-`include "decoders.v"
+`include "Registers/register.v"
+`include "Registers/decoders.v"
 
 module regfile
 (
