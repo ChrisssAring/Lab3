@@ -13,7 +13,7 @@ module testALU32bit();
   ALUcontrolLUT alu(cout, flag, finalALUsig[31:0], ALUcommand[2:0], a[31:0], b[31:0], zero);
 
   initial begin
-    $display("ALU Command  Input A                          Input B                           | Output                           Flag  Carryout");
+    $display("ALU Command  Input A                          Input B                           | Output                           Flag  Carryout Zero");
     //Test cases add
     ALUcommand = 3'b000;
     
@@ -21,7 +21,7 @@ module testALU32bit();
     a = 32'b00000000000000000000000000000000;
     b = 32'b00000000000000000000000000000000;
     #25000
-    $display("%b           %b %b | %b %b     %b", ALUcommand, a, b, finalALUsig, flag, cout);
+    $display("%b           %b %b | %b %b     %b  %b", ALUcommand, a, b, finalALUsig, flag, cout, zero);
 
     // Verify expectations and report test result
     if((finalALUsig != 32'b00000000000000000000000000000000) || (flag != 0) || (cout != 0)) begin
