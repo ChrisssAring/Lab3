@@ -18,7 +18,7 @@ module mux2 #( parameter W = 1 )
 endmodule
 //------------------------------------------------------------------
 //
-module signExtend(imm, signExt);
+module signExtend(imm);
 	input[15:0] imm;
 	output[31:0] signExt;
 
@@ -113,7 +113,7 @@ register_mux mux2(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
 
 alu_mux mux2(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtend(.imm(imm),.signExt(imm_ex));
+signExtend signExtendo(.imm(imm),.signExt(imm_ex));
 
 
 // ALU
@@ -123,13 +123,10 @@ ALU ALUcontrolLUT(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0),
 dataMemory dataMemory(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));
 
 data_mem_mux mux2(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
-=======
-
 // Program Counter Cont.
 always @(posedge clk) begin
 	pc <= pcNext;
 end
-=======
 // need to assign once we have more info.
 //
 //
