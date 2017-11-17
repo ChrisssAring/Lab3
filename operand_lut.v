@@ -18,23 +18,37 @@
 
 module operand_lut
 (
-    input opCode,
+    input [5:0] opCode,
     input [4:0] rs,rt,
     output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,Branch
 );
 
+	// op_code
+	localparam LW = 6'h23;
+	localparam SW = 6'h2b;
+	localparam J = 6'h2;
+	localparam JAL = 6'h3;
+	localparam BNE = 6'h5;
+	localparam XORI = 6'he;
+	localparam ADDI = 6'h8;
+
+	localparam ADD = 6'h20;
+	localparam SUB = 6'h22;
+	localparam SLT = 6'h2a;
+	localparam JR = 6'h08;
+
 always @(opCode) begin
 	case (opCode)
 		default:begin
-			RegDst   = X;
-			RegWr    = X;
-			ALUcntrl = X;
-			MemWr    = X;
-			MemToReg = X;
-			ALUsrc   = X;
-			Branch 	 = X;
+			RegDst   = 1'bX;
+			RegWr    = 1'bX;
+			ALUcntrl = 1'bX;
+			MemWr    = 1'bX;
+			MemToReg = 1'bX;
+			ALUsrc   = 1'bX;
+			Branch 	 = 1'bX;
 		end
-		opLW: begin
+		LW: begin
 			RegDst   = 0;
 			RegWr    = 1;
 			ALUcntrl = 3'b000;
@@ -44,8 +58,8 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end
-		opSW: begin
-			RegDst   = X;
+		SW: begin
+			RegDst   = 1'bX;
 			RegWr    = 0;
 			ALUcntrl = 3'b000;
 			MemWr    = 1;
@@ -54,7 +68,7 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end
-		opJ: begin
+		J: begin
 			RegDst   = 0;
 			RegWr    = 0;
 			ALUcntrl = 3'b000;
@@ -64,32 +78,32 @@ always @(opCode) begin
 			Branch 	 = 1;
 		end
 
-		opJR: begin
+		JR: begin
 			RegDst   = 0;
 			RegWr    = 0;
 			ALUcntrl = 3'b000;
-			MemWr    = X;
+			MemWr    = 1'bX;
 			MemToReg = 1;
 			ALUsrc   = 0;
 			Branch 	 = 1;
 		end 
 
-		opJAL: begin
+		JAL: begin
 			RegDst   = 0;
 			RegWr    = 0;
 			ALUcntrl = 3'b000;
-			MemWr    = X;
+			MemWr    = 1'bX;
 			MemToReg = 0;
 			ALUsrc   = 0;
 			Branch 	 = 1;
 
 		end
-		opBNE: begin
-			RegDst   = X;
+		BNE: begin
+			RegDst   = 1'bX;
 			RegWr    = 0;
 			ALUcntrl = 3'b001;
 			MemWr    = 0;
-			MemToReg = X;
+			MemToReg = 1'bX;
 			ALUsrc   = 0;
 			if (rs != rt) begin
 				Branch = 1;
@@ -98,7 +112,7 @@ always @(opCode) begin
 			end
 
 		end 
-		opXORI: begin
+		XORI: begin
 			RegDst   = 0;
 			RegWr    = 1;
 			ALUcntrl = 3'b010;
@@ -108,7 +122,7 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end 
-		opADDI: begin
+		ADDI: begin
 			RegDst   = 0;
 			RegWr    = 1;
 			ALUcntrl = 3'b000;
@@ -118,7 +132,7 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end
-		opADD: begin
+		ADD: begin
 			RegDst   = 1;
 			RegWr    = 1;
 			ALUcntrl = 3'b000;
@@ -128,7 +142,7 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end
-		opSUB: begin
+		SUB: begin
 			RegDst   = 1;
 			RegWr    = 1;
 			ALUcntrl = 3'b001;
@@ -138,7 +152,7 @@ always @(opCode) begin
 			Branch 	 = 0;
 
 		end
-		opSLT: begin
+		SLT: begin
 			RegDst   = 1;
 			RegWr    = 1;
 			ALUcntrl = 3'b011;
