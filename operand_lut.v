@@ -20,7 +20,8 @@ module operand_lut
 (
     input [5:0] opCode,
     input [4:0] rs,rt,
-    output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,Branch
+    output reg [2:0] ALUcntrl,
+    output reg RegDst,RegWr,MemWr,MemToReg,ALUsrc,Branch
 );
 
 	// op_code

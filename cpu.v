@@ -72,7 +72,7 @@ wire [31:0] programCounter4;
 wire [31:0] programCounterIn;
 wire [31:0] adder_4;
 wire [31:0] adder_extend;
-reg  [31:0] programCounter;
+reg [31:0] programCounter;
 
 reg [31:0] pc = 0;
 wire [31:0] pcPlus4;
@@ -84,7 +84,7 @@ wire [31:0] Instructions;
 //Operand Wires
 wire RegDst;
 wire RegWr;
-wire ALUcntrl;
+wire [2:0] ALUcntrl;
 wire MemWr;
 wire MemToReg;
 wire ALUsrc;
@@ -92,7 +92,7 @@ wire PCsrc;
 wire Branch;
 
 //Register Wires
-wire [31:0] RegWrite;
+wire RegWrite;
 wire [31:0] WriteReg;
 wire [4:0]  WriteDataReg;
 wire [31:0] readData0;
@@ -100,7 +100,7 @@ wire [31:0] readData1;
 
 //ALU Wires
 wire zero;
-wire [31:0] imm_ex;
+wire [31:0] imm_ext;
 wire [31:0] aluResult;
 wire [31:0] alu_mux_out;
 
@@ -114,9 +114,9 @@ wire [31:0] WriteData;
 // Program Counter
 assign pcPlus4 = programCounterIn;
 
-ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(3'b000), .a(pcNext), .b(3'b100)); //Add 4
+ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(3'b000), .a(pcNext), .b(32'b00000000000000000000000000000100)); //Add 4
 
-ALUcontrolLUT PC_Current(.finalsignal(adder_extend), .ALUCommand(3'b000), .a(imm_ex<<2), .b(adder_4));
+ALUcontrolLUT PC_Current(.finalsignal(adder_extend), .ALUCommand(3'b000), .a(imm_ext<<2), .b(adder_4));
 
 mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
 
@@ -134,9 +134,9 @@ regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteDa
 
 mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteDataReg));
 
-mux32 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
+mux32 alu_mux(.in0(imm_ext),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtend signExtendo(.imm(imm), .signExt(imm_ex));
+signExtend signExtendo(.imm(imm), .signExt(imm_ext));
 
 
 // ALU
