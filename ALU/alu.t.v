@@ -8,8 +8,9 @@ module testALU32bit();
   wire[31:0] finalALUsig;
   wire flag;
   wire cout;
+  wire zero;
 
-  ALUcontrolLUT alu(cout, flag, finalALUsig[31:0], ALUcommand[2:0], a[31:0], b[31:0]);
+  ALUcontrolLUT alu(cout, flag, finalALUsig[31:0], ALUcommand[2:0], a[31:0], b[31:0], zero);
 
   initial begin
     $display("ALU Command  Input A                          Input B                           | Output                           Flag  Carryout");
