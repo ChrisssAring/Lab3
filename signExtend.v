@@ -1,4 +1,4 @@
-module signExtend(imm);
+module signExtend(imm, signExt);
 	input[15:0] imm;
 	output[31:0] signExt;
 

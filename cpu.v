@@ -137,7 +137,7 @@ mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteDataReg));
 
 mux32 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtendo signExtend(.imm(imm),.signExt(imm_ex));
+signExtend signExtendo(.imm(imm), .signExt(imm_ex));
 
 
 // ALU
