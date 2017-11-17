@@ -17,6 +17,31 @@ module mux2 #( parameter W = 1 )
     assign out = (sel) ? in1 : in0;
 endmodule
 //------------------------------------------------------------------
+// Five-input MUX with parameterized bit width
+module mux5 #( parameter W = 5 )
+(
+    input[W-1:0]    in0,
+    input[W-1:0]    in1,
+    input           sel,
+    output[W-1:0]   out
+);
+    // Conditional operator - http://www.verilog.renerta.com/source/vrg00010.htm
+    assign out = (sel) ? in1 : in0;
+endmodule
+//------------------------------------------------------------------
+// 32-input MUX with parameterized bit width 
+module mux2 #( parameter W = 32 )
+(
+    input[W-1:0]    in0,
+    input[W-1:0]    in1,
+    input           sel,
+    output[W-1:0]   out
+);
+    // Conditional operator - http://www.verilog.renerta.com/source/vrg00010.htm
+    assign out = (sel) ? in1 : in0;
+endmodule
+//------------------------------------------------------------------
+
 //
 module signExtendo(imm);
 	input[15:0] imm;
