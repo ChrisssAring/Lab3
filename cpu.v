@@ -74,7 +74,7 @@ instructionMemory instructionMemory(clk, 1'b0, {2'b0, programCounter [31:2]}, 32
 register_mux mux2(.in0(Instructions[15:11]),.in1(Instructions[20:16]),.sel(RegDst),.out(WriteReg))
 
 // Register
-Registry register(.WrEn(RegWr),.Rs(Instructions[25:21]),.Rt(Instructions[20:16]),.Aw(WriteReg),.Dw(WriteData),.Da(readData0),.Db(readData1));
+Registry regfile(.RegWrite(RegWr),.ReadRegister1(Instructions[25:21]),.ReadRegister2(Instructions[20:16]),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
 
 
 ALU ALUcontrolLUT(.cout(aluCout), .flag(aluFlag), .finalsignal(aluResult), .ALUCommand(aluCommand), .a(aluA), .b(aluB));
