@@ -19,6 +19,7 @@
 module operand_lut
 (
     input opCode,
+    input [4:0] rs,rt,
     output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,Branch
 );
 
@@ -36,7 +37,7 @@ always @(opCode) begin
 		opLW: begin
 			RegDst   = 0;
 			RegWr    = 1;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = 0; 
 			MemToReg = 1;
 			ALUsrc   = 1;
@@ -46,7 +47,7 @@ always @(opCode) begin
 		opSW: begin
 			RegDst   = X;
 			RegWr    = 0;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = 1;
 			MemToReg = 0;
 			ALUsrc   = 1;
@@ -56,37 +57,37 @@ always @(opCode) begin
 		opJ: begin
 			RegDst   = 0;
 			RegWr    = 0;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
 			Branch 	 = 1;
-
 		end
+
 		opJR: begin
 			RegDst   = 0;
 			RegWr    = 0;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = X;
 			MemToReg = 1;
 			ALUsrc   = 0;
 			Branch 	 = 1;
-
 		end 
+
 		opJAL: begin
-			RegDst   = ;
-			RegWr    = ;
-			ALUcntrl = 000;
+			RegDst   = 0;
+			RegWr    = 0;
+			ALUcntrl = 3'b000;
 			MemWr    = X;
-			MemToReg = 1;
-			ALUsrc   = ;
+			MemToReg = 0;
+			ALUsrc   = 0;
 			Branch 	 = 1;
 
 		end
 		opBNE: begin
 			RegDst   = X;
 			RegWr    = 0;
-			ALUcntrl = 001;
+			ALUcntrl = 3'b001;
 			MemWr    = 0;
 			MemToReg = X;
 			ALUsrc   = 0;
@@ -100,7 +101,7 @@ always @(opCode) begin
 		opXORI: begin
 			RegDst   = 0;
 			RegWr    = 1;
-			ALUcntrl = 010;
+			ALUcntrl = 3'b010;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
@@ -110,7 +111,7 @@ always @(opCode) begin
 		opADDI: begin
 			RegDst   = 0;
 			RegWr    = 1;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
@@ -120,7 +121,7 @@ always @(opCode) begin
 		opADD: begin
 			RegDst   = 1;
 			RegWr    = 1;
-			ALUcntrl = 000;
+			ALUcntrl = 3'b000;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
@@ -130,7 +131,7 @@ always @(opCode) begin
 		opSUB: begin
 			RegDst   = 1;
 			RegWr    = 1;
-			ALUcntrl = 001;
+			ALUcntrl = 3'b001;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
@@ -140,13 +141,12 @@ always @(opCode) begin
 		opSLT: begin
 			RegDst   = 1;
 			RegWr    = 1;
-			ALUcntrl = 011;
+			ALUcntrl = 3'b011;
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
 			Branch 	 = 0;
-
 		end 
 	endcase
-
+end
 endmodule
