@@ -1,6 +1,6 @@
 `include "instructionMemory.v"
 `include "decodeInstruction.v"
-`include "ALU/alu.v"
+`include "alu.v"
 `include "Registers/regfile.v"
 `include "operand_lut.v"
 `include "dataMemory.v"
@@ -114,9 +114,9 @@ wire [31:0] WriteData;
 // Program Counter
 assign pcPlus4 = programCounterIn;
 
-ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(3'b000), .a(pcNext), .b(32'b00000000000000000000000000000100)); //Add 4
+ALU PC_Add4(.result(adder_4), .command(3'b000), .operandA(pcNext), .operandB(32'b00000000000000000000000000000100)); //Add 4
 
-ALUcontrolLUT PC_Current(.finalsignal(adder_extend), .ALUCommand(3'b000), .a(imm_ext<<2), .b(adder_4));
+ALU PC_Current(.result(adder_extend), .command(3'b000), .operandA(imm_ext<<2), .operandB(adder_4));
 
 mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
 
@@ -125,6 +125,7 @@ instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
 
 //Controls
 decodeInstruction decode(.Opp(opCode), .Func(func), .Rs(rs), .Rt(rt), .Rd(rd), .Shamt(shamt), .Imm(imm), .Jaddress(jumpAddress), .instruction(Instructions));
+
 operand_lut operand_controls(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.Branch(Branch),.rs(rs),.rt(rt));
 
 assign PCsrc = Branch&&zero;
@@ -140,7 +141,7 @@ signExtend signExtendo(.imm(imm), .signExt(imm_ext));
 
 
 // ALU
-ALUcontrolLUT ALU(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0), .b(alu_mux_out), .zero(zero));
+ALU ALU_instance(.result(aluResult), .command(ALUcntrl), .operandA(readData0), .operandB(alu_mux_out), .zero(zero));
 
 // Data Memory
 dataMemory dataMemory1(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));
