@@ -1,3 +1,5 @@
+`include "signExtend.v"
+
 module decodeInstruction (instruction, Opp, Rs, Rt, Rd, Shamt, Func, Imm, Jaddress);
 
 	input[31:0] instruction;
