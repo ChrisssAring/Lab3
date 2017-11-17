@@ -134,9 +134,9 @@ assign PCsrc = Branch&&zero;
 // Register
 regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
 
-mux2 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
+mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
 
-mux2 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
+mux32 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
 signExtendo signExtend(.imm(imm),.signExt(imm_ex));
 
@@ -147,7 +147,7 @@ ALUcontrolLUT ALU(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0),
 // Data Memory
 dataMemory dataMemory1(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));
 
-mux2 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
+mux32 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
 // Program Counter Cont.
 always @(posedge clk) begin
 	pc <= pcNext;
