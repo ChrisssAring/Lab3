@@ -4,6 +4,31 @@
 `include "Registers/regfile.v"
 `include "operand_LUT.v"
 `include "dataMemory.v"
+//------------------------------------------------------------------
+// Two-input MUX with parameterized bit width (default: 1-bit)
+module mux2 #( parameter W = 1 )
+(
+    input[W-1:0]    in0,
+    input[W-1:0]    in1,
+    input           sel,
+    output[W-1:0]   out
+);
+    // Conditional operator - http://www.verilog.renerta.com/source/vrg00010.htm
+    assign out = (sel) ? in1 : in0;
+endmodule
+//------------------------------------------------------------------
+//
+module signExtend(imm, signExt);
+	input[15:0] imm;
+	output[31:0] signExt;
+
+	wire [15:0] imm;
+	wire [31:0] signExt;
+
+	assign signExt [15:0] = imm[15:0];
+	assign signExt [31:16] = {16 {imm[15]}};
+
+endmodule
 
 module cpu();
 
@@ -17,7 +42,6 @@ wire [15:0] imm;
 wire [25:0] jadress;
 wire [31:0] jumpAddress;
 //wire [31:0] branchAddress;
-=======
 
 //Program Counter Wires
 wire programCounter4;
@@ -61,31 +85,7 @@ wire [31:0] dataMemoryOut;
 wire [31:0] dataMemoryIn;
 wire [31:0] dataMemoryAddress;
 
-//------------------------------------------------------------------
-// Two-input MUX with parameterized bit width (default: 1-bit)
-module mux2 #( parameter W = 1 )
-(
-    input[W-1:0]    in0,
-    input[W-1:0]    in1,
-    input           sel,
-    output[W-1:0]   out
-);
-    // Conditional operator - http://www.verilog.renerta.com/source/vrg00010.htm
-    assign out = (sel) ? in1 : in0;
-endmodule
-//------------------------------------------------------------------
-//
-module signExtend(imm, signExt);
-	input[15:0] imm;
-	output[31:0] signExt;
 
-	wire [15:0] imm;
-	wire [31:0] signExt;
-
-	assign signExt [15:0] = imm[15:0];
-	assign signExt [31:16] = {16 {imm[15]}};
-
-endmodule
 
 
 // Program Counter
@@ -95,10 +95,10 @@ PC_Add4 ALUcontrolLUT(.finalsignal(adder_4), .ALUCommand(4'b0000), .a(pcNext), .
 
 PC_Current ALUcontrolLUT(.finalsignal(adder_ext), .ALUCommand(4'b0000), .a(imm_ext<<2), .b(adder_4));
 
-PC_mux mux2(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn)
+PC_mux mux2(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
 
 //Instruction Memory
-instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions);
+instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
 
 //Controls
 decodeInstruction decode(.Opp(opCode), .Func(func), .Rs(rs), .Rt(rt), .Rd(rd), .Shamt(shamt), .Imm(imm), .Jaddress(jumpAddress), .instruction(Instructions));
