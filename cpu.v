@@ -18,7 +18,7 @@ module mux2 #( parameter W = 1 )
 endmodule
 //------------------------------------------------------------------
 //
-module signExtend(imm);
+module signExtendo(imm);
 	input[15:0] imm;
 	output[31:0] signExt;
 
@@ -91,38 +91,38 @@ wire [31:0] dataMemoryAddress;
 // Program Counter
 assign pcPlus4 = programCounterIn;
 
-PC_Add4 ALUcontrolLUT(.finalsignal(adder_4), .ALUCommand(4'b0000), .a(pcNext), .b(3'b100)); //Add 4
+ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(4'b0000), .a(pcNext), .b(3'b100)); //Add 4
 
-PC_Current ALUcontrolLUT(.finalsignal(adder_ext), .ALUCommand(4'b0000), .a(imm_ext<<2), .b(adder_4));
+ALUcontrolLUT PC_Current(.finalsignal(adder_ext), .ALUCommand(4'b0000), .a(imm_ext<<2), .b(adder_4));
 
-PC_mux mux2(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
+mux2 PC_mux(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
 
 //Instruction Memory
 instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
 
 //Controls
 decodeInstruction decode(.Opp(opCode), .Func(func), .Rs(rs), .Rt(rt), .Rd(rd), .Shamt(shamt), .Imm(imm), .Jaddress(jumpAddress), .instruction(Instructions));
-operand_controls operand_lut(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.Branch(Branch),.rs(rs),.rt(rt));
+operand_lut operand_controls(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.Branch(Branch),.rs(rs),.rt(rt));
 
 assign PCsrc = Branch&&zero;
 
 // Register
-Registry regfile(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
+regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
 
-register_mux mux2(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
+mux2 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
 
-alu_mux mux2(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
+mux2 alu_mux(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtend signExtendo(.imm(imm),.signExt(imm_ex));
+signExtendo signExtend(.imm(imm),.signExt(imm_ex));
 
 
 // ALU
-ALU ALUcontrolLUT(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0), .b(alu_mux_out), .zero(zero));
+ALUcontrolLUT ALU(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0), .b(alu_mux_out), .zero(zero));
 
 // Data Memory
-dataMemory dataMemory(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));
+dataMemory dataMemory1(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));
 
-data_mem_mux mux2(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
+mux2 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
 // Program Counter Cont.
 always @(posedge clk) begin
 	pc <= pcNext;
