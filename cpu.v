@@ -1,6 +1,10 @@
 `include "instructionMemory.v"
 `include "signExtend.v"
 `include "decodeInstruction.v"
+`include "ALU/alu.v"
+`include "Registers/regfile.v"
+`include "operand_LUT.v"
+`include "dataMemory.v"
 
 module cpu();
 
@@ -30,7 +34,6 @@ wire [31:0] pcNext;
 //Instruction Memory
 wire [31:0] Instructions;
 
-
 //Operand Wires
 wire RegDst;
 wire RegWr;
@@ -39,16 +42,18 @@ wire MemWr;
 wire MemToReg;
 wire ALUsrc;
 wire PCsrc;
+wire Branch;
 
 //Register Wires
-wire RegWrite
-wire WriteReg
-wire WriteData
-wire [31:0] readData0
-wire [31:0] readData1
+wire RegWrite;
+wire WriteReg;
+wire WriteData;
+wire [31:0] readData0;
+wire [31:0] readData1;
 
 //ALU Wires
-wire [31:0] imm_ex
+wire zero;
+wire [31:0] imm_ex;
 wire [31:0] aluResult;
 wire [31:0] alu_mux_out;
 
@@ -86,7 +91,9 @@ instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions);
 
 //Controls
 decodeInstruction decode(.Opp(opCode), .Func(func), .Rs(rs), .Rt(rt), .Rd(rd), .Shamt(shamt), .Imm(imm), .Jaddress(jumpAddress), .instruction(Instructions));
-operand_controls operand_lut(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.PCsrc(PCsrc));
+operand_controls operand_lut(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.Branch(Branch),.rs(rs),.rt(rt));
+
+assign PCsrc = Branch&&zero;
 
 // Register
 Registry regfile(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
@@ -99,7 +106,7 @@ signExtend(.imm(imm),.signExtend(imm_ex));
 
 
 // ALU
-ALU ALUcontrolLUT(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0), .b(alu_mux_out));
+ALU ALUcontrolLUT(.finalsignal(aluResult), .ALUCommand(ALUcntrl), .a(readData0), .b(alu_mux_out), .zero(zero));
 
 // Data Memory
 dataMemory dataMemory(.clk(clk), .dataIn(aluResult), .address(aluResult), .dataOut(dataMemoryOut), .writeEnable(MemWr));

@@ -19,7 +19,7 @@
 module operand_lut
 (
     input opCode,
-    output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,PCsrc
+    output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,Branch
 );
 
 always @(opCode) begin
@@ -31,7 +31,7 @@ always @(opCode) begin
 			MemWr    = X;
 			MemToReg = X;
 			ALUsrc   = X;
-			PCsrc 	 = X;
+			Branch 	 = X;
 		end
 		opLW: begin
 			RegDst   = 0;
@@ -40,7 +40,7 @@ always @(opCode) begin
 			MemWr    = 0; 
 			MemToReg = 1;
 			ALUsrc   = 1;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end
 		opSW: begin
@@ -50,27 +50,27 @@ always @(opCode) begin
 			MemWr    = 1;
 			MemToReg = 0;
 			ALUsrc   = 1;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end
 		opJ: begin
-			RegDst   = ;
-			RegWr    = ;
+			RegDst   = 0;
+			RegWr    = 0;
 			ALUcntrl = 000;
-			MemWr    = ;
-			MemToReg = ;
-			ALUsrc   = ;
-			PCsrc 	 = X;
+			MemWr    = 0;
+			MemToReg = 0;
+			ALUsrc   = 0;
+			Branch 	 = 1;
 
 		end
 		opJR: begin
-			RegDst   = ;
-			RegWr    = ;
+			RegDst   = 0;
+			RegWr    = 0;
 			ALUcntrl = 000;
 			MemWr    = X;
 			MemToReg = 1;
-			ALUsrc   = ;
-			PCsrc 	 = X;
+			ALUsrc   = 0;
+			Branch 	 = 1;
 
 		end 
 		opJAL: begin
@@ -80,7 +80,7 @@ always @(opCode) begin
 			MemWr    = X;
 			MemToReg = 1;
 			ALUsrc   = ;
-			PCsrc 	 = X;
+			Branch 	 = 1;
 
 		end
 		opBNE: begin
@@ -90,7 +90,11 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = X;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			if (rs != rt) begin
+				Branch = 1;
+			end else begin 
+				Branch = 0;
+			end
 
 		end 
 		opXORI: begin
@@ -100,7 +104,7 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end 
 		opADDI: begin
@@ -110,7 +114,7 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end
 		opADD: begin
@@ -120,7 +124,7 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end
 		opSUB: begin
@@ -130,7 +134,7 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end
 		opSLT: begin
@@ -140,7 +144,7 @@ always @(opCode) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
-			PCsrc 	 = X;
+			Branch 	 = 0;
 
 		end 
 	endcase
