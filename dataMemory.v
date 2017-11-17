@@ -12,7 +12,7 @@ module dataMemory
 (
     input                       clk,
     output reg [width-1:0]      dataOut,
-    input      [6:0]            address,
+    input      [31:0]            address,
     input                       writeEnable,
     input      [width-1:0]      dataIn
 );
