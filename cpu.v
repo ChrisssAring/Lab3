@@ -1,5 +1,4 @@
 `include "instructionMemory.v"
-`include "signExtend.v"
 `include "decodeInstruction.v"
 `include "ALU/alu.v"
 `include "Registers/regfile.v"
@@ -75,6 +74,18 @@ module mux2 #( parameter W = 1 )
     assign out = (sel) ? in1 : in0;
 endmodule
 //------------------------------------------------------------------
+//
+module signExtend(imm, signExt);
+	input[15:0] imm;
+	output[31:0] signExt;
+
+	wire [15:0] imm;
+	wire [31:0] signExt;
+
+	assign signExt [15:0] = imm[15:0];
+	assign signExt [31:16] = {16 {imm[15]}};
+
+endmodule
 
 
 // Program Counter
@@ -102,7 +113,7 @@ register_mux mux2(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
 
 alu_mux mux2(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtend(.imm(imm),.signExtend(imm_ex));
+signExtend(.imm(imm),.signExt(imm_ex));
 
 
 // ALU
