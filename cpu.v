@@ -2,7 +2,7 @@
 `include "decodeInstruction.v"
 `include "ALU/alu.v"
 `include "Registers/regfile.v"
-`include "operand_LUT.v"
+`include "operand_lut.v"
 `include "dataMemory.v"
 //------------------------------------------------------------------
 // Two-input MUX with parameterized bit width (default: 1-bit)
