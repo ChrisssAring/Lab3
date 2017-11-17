@@ -30,7 +30,7 @@ module mux5 #( parameter W = 5 )
 endmodule
 //------------------------------------------------------------------
 // 32-input MUX with parameterized bit width 
-module mux2 #( parameter W = 32 )
+module mux32 #( parameter W = 32 )
 (
     input[W-1:0]    in0,
     input[W-1:0]    in1,
