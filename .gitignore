@@ -1,3 +1,5 @@
 *
 !*.*
 *.vcd
+*.swp
+.DS_Store
