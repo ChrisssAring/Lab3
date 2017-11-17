@@ -5,14 +5,14 @@
 //   If writeEnable is true, writes dataIn to mem[address]
 //------------------------------------------------------------------------
 
-module datamemory
+module dataMemory
 #(
     parameter width = 32
 )
 (
-    input 		                clk,
+    input                       clk,
     output reg [width-1:0]      dataOut,
-    input      [width-1:0]      address,
+    input      [6:0]            address,
     input                       writeEnable,
     input      [width-1:0]      dataIn
 );
