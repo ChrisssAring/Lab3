@@ -18,12 +18,12 @@
 
 module operand_lut
 (
-    input OP,
-    output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc
+    input opCode,
+    output reg RegDst,RegWr,ALUcntrl,MemWr,MemToReg,ALUsrc,PCsrc
 );
 
-always @(OP) begin
-	case (OP)
+always @(opCode) begin
+	case (opCode)
 		default:begin
 			RegDst   = X;
 			RegWr    = X;
@@ -31,6 +31,7 @@ always @(OP) begin
 			MemWr    = X;
 			MemToReg = X;
 			ALUsrc   = X;
+			PCsrc 	 = X;
 		end
 		opLW: begin
 			RegDst   = 0;
@@ -39,6 +40,8 @@ always @(OP) begin
 			MemWr    = 0; 
 			MemToReg = 1;
 			ALUsrc   = 1;
+			PCsrc 	 = X;
+
 		end
 		opSW: begin
 			RegDst   = X;
@@ -47,6 +50,8 @@ always @(OP) begin
 			MemWr    = 1;
 			MemToReg = 0;
 			ALUsrc   = 1;
+			PCsrc 	 = X;
+
 		end
 		opJ: begin
 			RegDst   = ;
@@ -55,6 +60,8 @@ always @(OP) begin
 			MemWr    = ;
 			MemToReg = ;
 			ALUsrc   = ;
+			PCsrc 	 = X;
+
 		end
 		opJR: begin
 			RegDst   = ;
@@ -63,6 +70,8 @@ always @(OP) begin
 			MemWr    = X;
 			MemToReg = 1;
 			ALUsrc   = ;
+			PCsrc 	 = X;
+
 		end 
 		opJAL: begin
 			RegDst   = ;
@@ -71,6 +80,8 @@ always @(OP) begin
 			MemWr    = X;
 			MemToReg = 1;
 			ALUsrc   = ;
+			PCsrc 	 = X;
+
 		end
 		opBNE: begin
 			RegDst   = X;
@@ -79,6 +90,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = X;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end 
 		opXORI: begin
 			RegDst   = 0;
@@ -87,6 +100,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end 
 		opADDI: begin
 			RegDst   = 0;
@@ -95,6 +110,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end
 		opADD: begin
 			RegDst   = 1;
@@ -103,6 +120,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end
 		opSUB: begin
 			RegDst   = 1;
@@ -111,6 +130,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end
 		opSLT: begin
 			RegDst   = 1;
@@ -119,6 +140,8 @@ always @(OP) begin
 			MemWr    = 0;
 			MemToReg = 0;
 			ALUsrc   = 0;
+			PCsrc 	 = X;
+
 		end 
 	endcase
 

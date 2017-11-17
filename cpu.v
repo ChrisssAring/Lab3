@@ -1,5 +1,6 @@
 `include "instructionMemory.v"
 `include "signExtend.v"
+`include "decodeInstruction.v"
 
 module cpu();
 
@@ -12,7 +13,7 @@ wire [5:0] func;
 wire [15:0] imm;
 wire [25:0] jadress;
 wire [31:0] jumpAddress;
-wire [31:0] branchAddress;
+//wire [31:0] branchAddress;
 =======
 
 //Program Counter Wires
@@ -28,6 +29,7 @@ wire [31:0] pcNext;
 
 //Instruction Memory
 wire [31:0] Instructions;
+
 
 //Operand Wires
 wire RegDst;
@@ -82,14 +84,18 @@ PC_mux mux2(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn)
 //Instruction Memory
 instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions);
 
-// Register
-Registry regfile(.RegWrite(RegWr),.ReadRegister1(Instructions[25:21]),.ReadRegister2(Instructions[20:16]),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
+//Controls
+decodeInstruction decode(.Opp(opCode), .Func(func), .Rs(rs), .Rt(rt), .Rd(rd), .Shamt(shamt), .Imm(imm), .Jaddress(jumpAddress), .instruction(Instructions));
+operand_controls operand_lut(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUcntrl(ALUcntrl),.MemWr(MemWr),.MemToReg(MemToReg),.ALUsrc(ALUsrc),.PCsrc(PCsrc));
 
-register_mux mux2(.in0(Instructions[15:11]),.in1(Instructions[20:16]),.sel(RegDst),.out(WriteReg));
+// Register
+Registry regfile(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteData),.ReadData1(readData0),.ReadData2(readData1));
+
+register_mux mux2(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteReg));
 
 alu_mux mux2(.in0(imm_ex),.in1(readData1),.sel(ALUsrc),.out(alu_mux_out));
 
-signExtend(.imm(Instructions[15:0]),.signExtend(imm_ex));
+signExtend(.imm(imm),.signExtend(imm_ex));
 
 
 // ALU
