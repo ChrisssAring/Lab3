@@ -64,16 +64,15 @@ wire [5:0] opCode;
 wire [4:0] rs, rt, rd, shamt;
 wire [5:0] func;
 wire [15:0] imm;
-wire [25:0] jadress;
-wire [31:0] jumpAddress;
+wire [25:0] jumpAddress;
 //wire [31:0] branchAddress;
 
 //Program Counter Wires
-wire programCounter4;
-wire programCounterIn;
-wire adder_4;
-wire adder_extend;
-reg [31:0] programCounter;
+wire [31:0] programCounter4;
+wire [31:0] programCounterIn;
+wire [31:0] adder_4;
+wire [31:0] adder_extend;
+reg  [31:0] programCounter;
 
 reg [31:0] pc = 0;
 wire [31:0] pcPlus4;
@@ -93,7 +92,7 @@ wire PCsrc;
 wire Branch;
 
 //Register Wires
-wire RegWrite;
+wire [31:0] RegWrite;
 wire [31:0] WriteReg;
 wire [4:0]  WriteDataReg;
 wire [31:0] readData0;
@@ -115,11 +114,11 @@ wire [31:0] WriteData;
 // Program Counter
 assign pcPlus4 = programCounterIn;
 
-ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(4'b0000), .a(pcNext), .b(3'b100)); //Add 4
+ALUcontrolLUT PC_Add4(.finalsignal(adder_4), .ALUCommand(3'b000), .a(pcNext), .b(3'b100)); //Add 4
 
-ALUcontrolLUT PC_Current(.finalsignal(adder_ext), .ALUCommand(4'b0000), .a(imm_ext<<2), .b(adder_4));
+ALUcontrolLUT PC_Current(.finalsignal(adder_extend), .ALUCommand(3'b000), .a(imm_ex<<2), .b(adder_4));
 
-mux2 PC_mux(.in0(adder_ext),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
+mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
 
 //Instruction Memory
 instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
