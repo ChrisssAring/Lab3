@@ -95,7 +95,7 @@ wire Branch;
 //Register Wires
 wire RegWrite;
 wire WriteReg;
-wire WriteData;
+wire [31:0] WriteData;
 wire [31:0] readData0;
 wire [31:0] readData1;
 
