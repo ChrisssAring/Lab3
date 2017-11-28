@@ -114,9 +114,7 @@ wire [31:0] WriteData;
 
 
 // Program Counter
-//assign pcPlus4 = programCounterIn;
-assign pcPlus4 = pc + 4;
-
+assign pcPlus4 = programCounterIn;
 
 ALU PC_Add4(.result(adder_4), .command(3'b000), .operandA(pcNext), .operandB(32'b00000000000000000000000000000100)); //Add 4
 
@@ -153,8 +151,7 @@ dataMemory dataMemory1(.clk(clk), .dataIn(aluResult), .address(aluResult), .data
 mux32 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
 // Program Counter Cont.
 always @(posedge clk) begin
-	if (pcNext) begin
-		pc <= pcNext;
+	pc <= pcNext;
 end
 
 endmodule
