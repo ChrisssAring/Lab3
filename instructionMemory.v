@@ -4,7 +4,7 @@ module instructionMemory
   output [31:0] dataOut
 );
 
-  reg [31:0] mem[0:4];
+  reg [31:0] mem[0:1023];
   initial $readmemh("memory.dat", mem);
 
   assign dataOut = mem[address];

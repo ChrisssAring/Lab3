@@ -55,7 +55,9 @@ module signExtendo(imm);
 
 endmodule
 
-module cpu();
+module cpu(
+input clk
+);
 
 wire clk;
 
@@ -151,9 +153,5 @@ mux32 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(Write
 always @(posedge clk) begin
 	pc <= pcNext;
 end
-// need to assign once we have more info.
-//
-//
-//
 
 endmodule
