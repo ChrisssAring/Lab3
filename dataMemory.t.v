@@ -15,7 +15,7 @@ module testDataMemory();
 
 		clk = 0;
 		writeEnable = 1; dataIn = 32'd11; address = 7'd22;
-		 #10 clk=1; #10 clk=0; #10;	// Generate two clock pulses
+		#10 clk=1; #10 clk=0; #10; clk=1; #10 clk=0; #10;	// Generate two clock pulses
 		$display("| %b  |%b|%b|", writeEnable, dataIn[31:0], dataOut[31:0]);
 
 		writeEnable = 0; dataIn = 32'd20; address = 7'd22;
