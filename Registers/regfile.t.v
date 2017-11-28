@@ -82,7 +82,6 @@ input	   		begintest,	// Triggers start of testing
 output reg 		endtest,	// Raise once test completes
 output reg 		dutpassed,	// Signal test result
 
-
 // Register File DUT connections
 input[31:0]		ReadData1,
 input[31:0]		ReadData2,
@@ -94,9 +93,6 @@ output reg		RegWrite,
 output reg		Clk
 );
 
-  // Initialize the integer i to iterate through registers in tests
-  integer i;
-
   // Initialize register driver signals
   initial begin
     WriteData=32'd0;
@@ -106,7 +102,6 @@ output reg		Clk
     RegWrite=0;
     Clk=0;
   end
-
 
   // Once 'begintest' is asserted, start running test cases
   always @(posedge begintest) begin
@@ -145,101 +140,60 @@ output reg		Clk
     $display("Test Case 2 Failed");
   end
 
-
-  // Test Case Deliverable 8 #2: 
-  // This test case should make sure that Write Enable is not
-  // broken / ignored
-  // Write '15' to register 2, then attempt to write '16' to 
-  // register 2 when RegWrite=0 
+  // Test Case 3:
+  // Write Enable is broken / ignored.
   WriteRegister = 5'd2;
-  WriteData = 32'd15;
-  RegWrite = 1;
-  ReadRegister1 = 5'd2;
-  ReadRegister2 = 5'd2;
-  #5 Clk=1; #5 Clk=0;
-
-  if((ReadData1 != 15) || (ReadData2 != 15)) begin
-    dutpassed = 0;
-    $display("Test Case 8.2(1) Failed");
-  end
-
-  WriteRegister = 5'd2;
-  WriteData = 32'd16;
+  WriteData = 32'd1;
   RegWrite = 0;
   ReadRegister1 = 5'd2;
   ReadRegister2 = 5'd2;
+
   #5 Clk=1; #5 Clk=0;
 
-  if((ReadData1 == 16) || (ReadData2 == 16)) begin
-    dutpassed = 0;
-    $display("Test Case 8.2(2) Failed");
+  if((ReadData1 == 1) || (ReadData2 == 1)) begin
+      dutpassed = 0;
+      $display("Test Case 3 Failed");
   end
 
-  // Test Case Deliverable 8 #3: 
-  // This test case should make sure that the decoder is not 
-  // broken (i.e. not all registers are written to)
-  // Write '12' to register 27, then check register 2
-  WriteRegister = 5'd27;
-  WriteData = 32'd12;
+  // Test Case 4:
+  // Decoder is broken.
+  WriteRegister = 5'd2;
+  WriteData = 32'd1;
   RegWrite = 1;
-  ReadRegister1 = 5'd27;
-  ReadRegister2 = 5'd27;
-  #5 Clk=1; #5 Clk=0;
-
-  if((ReadData1 != 12) || (ReadData2 != 12)) begin
-    dutpassed = 0;
-    $display("Test Case 8.3(1) Failed");
-  end
-
   ReadRegister1 = 5'd2;
-  ReadRegister2 = 5'd2;
-  #5 Clk=1; #5 Clk=0;
+  ReadRegister2 = 5'd3;
 
-  if((ReadData1 == 12) || (ReadData2 == 12)) begin
-    dutpassed = 0;
-    $display("Test Case 8.3(2) Failed");
+  #5 Clk=1; #5 Clk=0;
+  if((ReadData1 != 1) || (ReadData2 == 1)) begin
+      dutpassed = 0;
+      $display("Test Case 4 Failed");
   end
 
-  // Test Case Deliverable 8 #4: 
-  // This test case should make sure that the decoder is not 
-  // broken (i.e. not all registers are written to)
-  // Write '12' to register 27, then check register 2
+  // Test Case 5:
+  // Register Zero is actually a register.
   WriteRegister = 5'd0;
-  WriteData = 32'd12;
+  WriteData = 32'd1;
   RegWrite = 1;
   ReadRegister1 = 5'd0;
-  ReadRegister2 = 5'd0;
+
   #5 Clk=1; #5 Clk=0;
-
-  if((ReadData1 != 0) || (ReadData2 != 0)) begin
-    dutpassed = 0;
-    $display("Test Case 8.4 Failed");
-  end
-
-  // Test Case Deliverable 8 #5: 
-  // This test case should make sure that all ports 
-  // read from the correct register
-  // Write to each register its own number and
-  // then read from each register.
-
-  for (i = 32'd1; i < 32'd32; i = i + 32'd1)
-    begin : writeToEachRegister
-      WriteRegister = i;
-      WriteData = i;
-      RegWrite = 1;
-      #5 Clk=1; #5 Clk=0;
-  end
-    
-
-  for (i = 32'd1; i < 32'd32; i = i + 32'd1)
-    begin : readEachRegister
-    ReadRegister1 = i;
-    ReadRegister2 = i;
-    #5 Clk=1; #5 Clk=0;
-    if((ReadData1 != i) || (ReadData2 != i)) begin
+  if (ReadData1 != 0) begin
       dutpassed = 0;
-      $display("Test Case 8.5 Failed");
-    end
+      $display("Test Case 5 Failed");
+  end
+
+  // Test Case 6:
+  // Port 2 is broken and always reads register 14.
+  WriteRegister = 5'd2;
+  WriteData = 32'd1;
+  RegWrite = 1;
+  #5 Clk=1; #5 Clk=0;
+  ReadRegister1 = 5'd2;
+
+  #5 Clk=1; #5 Clk=0;
+  if (ReadData1 != 1) begin
+      dutpassed = 0;
+      $display("Test Case 6 Failed");
   end
 
   // All done!  Wait a moment and signal test completion.

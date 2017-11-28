@@ -18,7 +18,7 @@ module cpu_test ();
     $dumpvars();
 
 
-    $readmemh("memory.dat", cpu.dataMemory1.mem); #200;
+    $readmemh("memory.dat", cpu.instructionMem.mem); #200;
     
     
 

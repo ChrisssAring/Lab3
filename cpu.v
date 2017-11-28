@@ -78,7 +78,7 @@ reg [31:0] programCounter;
 
 reg [31:0] pc = 0;
 wire [31:0] pcPlus4;
-wire [31:0] pcNext;
+wire [31:0] pcNext = 0;
 
 //Instruction Memory
 wire [31:0] Instructions;
@@ -95,7 +95,6 @@ wire Branch;
 
 //Register Wires
 wire RegWrite;
-wire [31:0] WriteReg;
 wire [4:0]  WriteDataReg;
 wire [31:0] readData0;
 wire [31:0] readData1;
@@ -120,7 +119,7 @@ ALU PC_Add4(.result(adder_4), .command(3'b000), .operandA(pcNext), .operandB(32'
 
 ALU PC_Current(.result(adder_extend), .command(3'b000), .operandA(imm_ext<<2), .operandB(adder_4));
 
-mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCSrc),.out(programCounterIn));
+mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCsrc),.out(programCounterIn));
 
 //Instruction Memory
 instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
@@ -133,7 +132,7 @@ operand_lut operand_controls(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUc
 assign PCsrc = Branch&&zero;
 
 // Register
-regfile Registry(.Clk(clk),.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteDataReg),.ReadData1(readData0),.ReadData2(readData1));
+regfile Registry(.Clk(clk),.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteData),.WriteRegister(WriteDataReg),.ReadData1(readData0),.ReadData2(readData1));
 
 mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteDataReg));
 
