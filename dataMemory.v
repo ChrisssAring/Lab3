@@ -18,12 +18,12 @@ module dataMemory
 );
 
 
-    reg [width-1:0] memory [1023:0];
+    reg [width-1:0] mem [1023:0];
 
     always @(posedge clk) begin
         if(writeEnable)
-            memory[address] <= dataIn;
-        dataOut <= memory[address];
+            mem[address] <= dataIn;
+        dataOut <= mem[address];
     end
 
 endmodule

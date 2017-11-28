@@ -18,7 +18,7 @@ module cpu_test ();
     $dumpvars();
 
 
-    $readmemh(mem_fn, memory.dat); #200;
+    $readmemh("memory.dat", cpu.dataMemory1.mem); #200;
     
     
 
@@ -26,7 +26,7 @@ module cpu_test ();
     $display("Time |         pc | instruction   | Read 1       |   Rs       | Rt     | Rd     | exec result ");
     repeat(10) begin
 
-        $display("%4t | %d | %d    |  %d  |   %b    | %b  | %b  | %d ", $time, cpu.pc_out, cpu.instruction, cpu.read1, cpu.rs, cpu.rt, cpu.rd, cpu.exec_result); #400;
+        $display("%4t | %d | %d    |  %d  |   %b    | %b  | %b  | %d ", $time, cpu.rs, cpu.rt, cpu.rd); #400;
         end
 
     #8000 $finish();
