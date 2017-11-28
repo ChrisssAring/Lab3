@@ -133,7 +133,7 @@ operand_lut operand_controls(.opCode(opCode),.RegDst(RegDst),.RegWr(RegWr),.ALUc
 assign PCsrc = Branch&&zero;
 
 // Register
-regfile Registry(.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteDataReg),.ReadData1(readData0),.ReadData2(readData1));
+regfile Registry(.Clk(clk),.RegWrite(RegWr),.ReadRegister1(rs),.ReadRegister2(rt),.WriteData(WriteReg),.WriteRegister(WriteDataReg),.ReadData1(readData0),.ReadData2(readData1));
 
 mux5 register_mux(.in0(rd),.in1(rt),.sel(RegDst),.out(WriteDataReg));
 
