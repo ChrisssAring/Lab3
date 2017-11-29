@@ -32,12 +32,12 @@ input		Clk		// Clock (Positive Edge Triggered)
   wire[(32*32) - 1:0] registerFinal;
 
   decoder1to32 decoder(writeFinal, RegWrite, WriteRegister);
-  register32zero register1(registerFinal[31:0], WriteData, writeFinal[0], Clk);
+  register32zero register0(registerFinal[31:0], WriteData, writeFinal[0], Clk);
 
   genvar i;
   generate 
   for (i = 1; i < 32; i = i + 1) begin: allRegisters
-        register32 register2(registerFinal[32 * (i + 1) - 1:32 * i], WriteData, writeFinal[i], Clk);
+        register32 register4(registerFinal[32 * (i + 1) - 1:32 * i], WriteData, writeFinal[i], Clk);
   end
   endgenerate
     

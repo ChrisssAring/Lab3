@@ -1,6 +1,6 @@
 `include "instructionMemory.v"
 `include "decodeInstruction.v"
-`include "alu.v"
+`include "ALU/alu.v"
 `include "Registers/regfile.v"
 `include "operand_lut.v"
 `include "dataMemory.v"
@@ -112,14 +112,11 @@ wire [31:0] dataMemoryAddress;
 wire [31:0] WriteData;
 
 
-// Program Counter
-assign pcPlus4 = programCounterIn;
-
-ALU PC_Add4(.result(adder_4), .command(3'b000), .operandA(pcNext), .operandB(32'b00000000000000000000000000000100)); //Add 4
+ALU PC_Add4(.result(adder_4), .command(3'b000), .operandA(programCounterIn), .operandB(32'b00000000000000000000000000000100)); //Add 4
 
 ALU PC_Current(.result(adder_extend), .command(3'b000), .operandA(imm_ext<<2), .operandB(adder_4));
 
-mux32 PC_mux(.in0(adder_extend),.in1(adder_4),.sel(PCsrc),.out(programCounterIn));
+mux32 PC_mux(.in1(adder_extend),.in0(adder_4),.sel(PCsrc),.out(programCounterIn));
 
 //Instruction Memory
 instructionMemory instructionMem(.address(pcNext),.dataOut(Instructions));
@@ -150,7 +147,7 @@ dataMemory dataMemory1(.clk(clk), .dataIn(aluResult), .address(aluResult), .data
 mux32 data_mem_mux(.in0(dataMemoryOut),.in1(aluResult),.sel(MemToReg),.out(WriteData));
 // Program Counter Cont.
 always @(posedge clk) begin
-	pc <= pcNext;
+	pc <= programCounterIn;
 end
 
 endmodule
